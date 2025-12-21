@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import { ItemTracker } from './components/ItemTracker';
 import { TrackedItemCard } from './components/TrackedItemCard';
 
-interface TrackedItem { id: string; name: string; icon: string; isHq: boolean; }
+// Added isActive as optional to satisfy the interface when creating new items
+interface TrackedItem {
+  id: string;
+  name: string;
+  icon: string;
+  isHq: boolean;
+  isActive?: boolean; 
+}
 
 export default function App() {
   const [favorites, setFavorites] = useState<TrackedItem[]>(() => {
@@ -33,7 +40,6 @@ export default function App() {
     localStorage.setItem('ffxiv-refresh-idx', intervalIndex.toString());
   }, [favorites, activeTrackers, intervalIndex]);
 
-  // Refined Proper Case + Roman Numeral Support
   const toProperCase = (str: string) => {
     return str.toLowerCase().split(' ').map(word => {
       const romanRegex = /^(i|v|x|l|c|d|m)+(?![a-z])$/i;
@@ -46,15 +52,13 @@ export default function App() {
     e.preventDefault();
     if (!formName || !formId) return;
     
-    // Step 1: Format base name to Proper Case
     let formattedName = toProperCase(formName.trim());
     
-    // Step 2: Append uppercase " HQ" if checked
     if (formIsHq && !formattedName.toUpperCase().endsWith(" HQ")) {
       formattedName += " HQ";
     }
 
-    const newItem = { 
+    const newItem: TrackedItem = { 
       id: formId.trim(), 
       name: formattedName, 
       icon: formIcon.trim() || "https://xivapi.com/i/020000/020001.png", 
@@ -114,7 +118,6 @@ export default function App() {
         ))}
       </div>
 
-      {/* Settings Button - Perfect Center */}
       <button 
         onClick={() => setShowSettings(!showSettings)} 
         style={{ 

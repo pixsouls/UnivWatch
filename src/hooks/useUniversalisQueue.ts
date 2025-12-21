@@ -8,7 +8,7 @@ interface ApiRequest {
   reject: (err: any) => void;
 }
 
-const DELAY_MS = 100; // Stagger time for reducing API call spam
+const DELAY_MS = 200; // Stagger time for reducing API call spam
 let queue: ApiRequest[] = [];
 let isProcessing = false;
 
