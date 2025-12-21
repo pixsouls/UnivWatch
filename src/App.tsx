@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { ItemTracker } from './components/ItemTracker';
 import { TrackedItemCard } from './components/TrackedItemCard';
 
-// Added isActive as optional to satisfy the interface when creating new items
+// Defined globally to ensure consistent types across the file
 interface TrackedItem {
   id: string;
   name: string;
   icon: string;
   isHq: boolean;
-  isActive?: boolean; 
+  isActive?: boolean; // Optional here so we can create it without the state flag
 }
 
 export default function App() {
@@ -40,6 +40,7 @@ export default function App() {
     localStorage.setItem('ffxiv-refresh-idx', intervalIndex.toString());
   }, [favorites, activeTrackers, intervalIndex]);
 
+  // Refined Proper Case + Roman Numeral Support
   const toProperCase = (str: string) => {
     return str.toLowerCase().split(' ').map(word => {
       const romanRegex = /^(i|v|x|l|c|d|m)+(?![a-z])$/i;
@@ -52,8 +53,10 @@ export default function App() {
     e.preventDefault();
     if (!formName || !formId) return;
     
+    // Step 1: Format base name to Proper Case
     let formattedName = toProperCase(formName.trim());
     
+    // Step 2: Append uppercase " HQ" if checked
     if (formIsHq && !formattedName.toUpperCase().endsWith(" HQ")) {
       formattedName += " HQ";
     }
@@ -118,6 +121,7 @@ export default function App() {
         ))}
       </div>
 
+      {/* Settings Button - Perfect Center */}
       <button 
         onClick={() => setShowSettings(!showSettings)} 
         style={{ 

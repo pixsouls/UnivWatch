@@ -1,7 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useUniversalisQueue } from '../hooks/useUniversalisQueue.ts';
 
-interface Props { itemId: string; isHq: boolean; region: string; initialName: string; iconUrl: string; globalRefresh: number; onClose: () => void; }
+interface Props { 
+  itemId: string; 
+  isHq: boolean; 
+  region: string; 
+  initialName: string; 
+  iconUrl: string; 
+  globalRefresh: number; 
+  onClose: () => void; 
+}
 
 export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, globalRefresh, onClose }: Props) => {
   const [data, setData] = useState<{market: any, history: any} | null>(null);
@@ -9,7 +17,6 @@ export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, global
   const [timeLeft, setTimeLeft] = useState(globalRefresh);
   const [isPaused, setIsPaused] = useState(false);
   
-  // Connect to our queue "server"
   const { fetchQueued } = useUniversalisQueue();
 
   const fetchData = useCallback(async () => {
@@ -18,7 +25,6 @@ export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, global
       const cleanId = itemId.replace(/\D/g, '');
       const hq = isHq ? '&hq=1' : '&hq=0';
 
-      // These two calls will now be staggered by the queue automatically
       const mData = await fetchQueued(`https://universalis.app/api/v2/${region}/${cleanId}?listings=8${hq}`);
       const hData = await fetchQueued(`https://universalis.app/api/v2/history/${region}/${cleanId}?entriesToReturn=25${hq}`);
 
@@ -31,9 +37,6 @@ export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, global
     }
   }, [itemId, region, globalRefresh, isHq, fetchQueued]);
 
-  // Rest of your component (useEffect for timers and JSX) remains the same as before
-  // ... (timers and oval button/labels logic)
-  
   useEffect(() => { fetchData(); }, [fetchData]);
 
   useEffect(() => {
@@ -50,11 +53,18 @@ export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, global
 
   const stats = (() => {
     if (!data?.market?.listings || !data?.history?.entries) return null;
-    const h = data.history.entries;
-    const m = data.market.listings;
-    const avgRecent = h.length > 0 ? Math.round(h.slice(0, 5).reduce((a:any, b:any) => a + b.pricePerUnit, 0) / Math.min(h.length, 5)) : 0;
+    const h = data.history.entries as any[];
+    const m = data.market.listings as any[];
+    
+    const avgRecent = h.length > 0 
+      ? Math.round(h.slice(0, 5).reduce((a, b) => a + b.pricePerUnit, 0) / Math.min(h.length, 5)) 
+      : 0;
+      
     const sorted = [...h].sort((a, b) => a.pricePerUnit - b.pricePerUnit);
-    const avgLowest = h.length > 0 ? Math.round(sorted.slice(0, 5).reduce((a:any, b:any) => a + b.pricePerUnit, 0) / Math.min(h.length, 5)) : 0;
+    const avgLowest = h.length > 0 
+      ? Math.round(sorted.slice(0, 5).reduce((a, b) => a + b.pricePerUnit, 0) / Math.min(h.length, 5)) 
+      : 0;
+      
     return { current: m[0], lastSale: h[0], avgRecent, avgLowest };
   })();
 
@@ -72,6 +82,7 @@ export const ItemTracker = ({ itemId, isHq, region, initialName, iconUrl, global
           </div>
           <div onClick={() => setIsPaused(!isPaused)} style={{ fontSize: '0.65rem', color: isPaused ? '#f39c12' : '#00d4ff', background: '#111', padding: '2px 6px', borderRadius: '4px', cursor: 'pointer' }}>{isPaused ? 'PAUSED' : `${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}`}</div>
         </div>
+        
         {loading && !data ? <div style={{color:'#444', fontSize:'0.7rem'}}>In Queue...</div> : stats ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ background: '#1a1a1a', padding: '10px', borderRadius: '0px', borderLeft: '4px solid #a29bfe' }}>
