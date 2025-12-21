@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { ItemTracker } from './components/ItemTracker';
 import { TrackedItemCard } from './components/TrackedItemCard';
 
-// Defined globally to ensure consistent types across the file
 interface TrackedItem {
   id: string;
   name: string;
   icon: string;
   isHq: boolean;
-  isActive?: boolean; // Optional here so we can create it without the state flag
+  isActive?: boolean;
 }
 
 export default function App() {

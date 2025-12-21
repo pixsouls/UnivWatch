@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useUniversalisQueue } from '../hooks/useUniversalisQueue.ts';
+import { useUniversalisQueue } from '../hooks/useUniversalisQueue';
 
 interface Props { 
   itemId: string; 
