@@ -1,0 +1,153 @@
+/* Container and Wrapper */
+.tracker-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.tracker-card {
+  background: #242424;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Close Button */
+.close-tracker-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 34px;
+  height: 22px;
+  border-radius: 11px;
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  font-weight: bold;
+  font-size: 12px;
+  transition: transform 0.1s;
+}
+
+.close-tracker-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Header Section */
+.tracker-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  marginBottom: 12px;
+}
+
+.item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.item-info {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.item-name {
+  margin: 0;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-meta {
+  font-size: 0.6rem;
+  color: #666;
+}
+
+/* Refresh Timer / Pause Button */
+.timer-badge {
+  font-size: 0.65rem;
+  background: #111;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.timer-paused { color: #f39c12; }
+.timer-active { color: #00d4ff; }
+
+/* Main Price Highlight */
+.price-highlight-box {
+  background: #1a1a1a;
+  padding: 10px;
+  border-radius: 0px;
+  border-left: 4px solid #a29bfe;
+  margin-bottom: 8px;
+}
+
+.highlight-label {
+  font-size: 0.55rem;
+  color: #888;
+  font-weight: bold;
+}
+
+.highlight-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 2px;
+}
+
+.current-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.world-name {
+  font-size: 0.75rem;
+  color: #a29bfe;
+  font-weight: bold;
+}
+
+/* Stats Rows */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-row {
+  background: #1d1d1d;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.55rem;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #bbb;
+}
+
+/* Borders for specific rows */
+.row-blue { border-left: 3px solid #00d4ff; }
+.row-yellow { border-left: 3px solid #f1c40f; }
+.row-green { border-left: 3px solid #2e7d32; }
+
+/* Status messages */
+.status-msg {
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 10px;
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ItemTracker } from './components/ItemTracker';
-import { TrackedItemCard } from './components/TrackedItemCard';
+import { ItemTracker } from './components/ItemTracker/ItemTracker';
+import { TrackedItemCard } from './components/TrackedItemCard/TrackedItemCard';
+import './App.css'; // Make sure this is imported!
 
 interface TrackedItem {
   id: string;
@@ -39,7 +40,6 @@ export default function App() {
     localStorage.setItem('ffxiv-refresh-idx', intervalIndex.toString());
   }, [favorites, activeTrackers, intervalIndex]);
 
-  // Refined Proper Case + Roman Numeral Support
   const toProperCase = (str: string) => {
     return str.toLowerCase().split(' ').map(word => {
       const romanRegex = /^(i|v|x|l|c|d|m)+(?![a-z])$/i;
@@ -52,10 +52,7 @@ export default function App() {
     e.preventDefault();
     if (!formName || !formId) return;
     
-    // Step 1: Format base name to Proper Case
     let formattedName = toProperCase(formName.trim());
-    
-    // Step 2: Append uppercase " HQ" if checked
     if (formIsHq && !formattedName.toUpperCase().endsWith(" HQ")) {
       formattedName += " HQ";
     }
@@ -81,17 +78,19 @@ export default function App() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', width: '100vw', backgroundColor: '#121212', color: '#e0e0e0', fontFamily: 'sans-serif', overflow: 'hidden' }}>
-      
+    <div className="app-container">
       {/* Sidebar */}
-      <div style={{ width: '300px', padding: '20px', borderRight: '1px solid #333', backgroundColor: '#1a1a1a', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-        <h2 style={{ fontSize: '0.7rem', color: '#00d4ff', marginBottom: '15px' }}>ADD NEW ITEM</h2>
-        <form onSubmit={addFavorite} style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px', padding: '12px', background: '#222', borderRadius: '8px' }}>
-          <input placeholder="Item Name" value={formName} onChange={e => setFormName(e.target.value)} style={{ padding: '8px', background: '#111', border: '1px solid #444', color: '#fff' }} />
-          <input placeholder="Item ID" value={formId} onChange={e => setFormId(e.target.value)} style={{ padding: '8px', background: '#111', border: '1px solid #444', color: '#fff' }} />
-          <input placeholder="Icon URL" value={formIcon} onChange={e => setFormIcon(e.target.value)} style={{ padding: '8px', background: '#111', border: '1px solid #444', color: '#fff' }} />
-          <label style={{ fontSize: '0.8rem', color: '#888', cursor: 'pointer' }}><input type="checkbox" checked={formIsHq} onChange={e => setFormIsHq(e.target.checked)} /> HQ Only</label>
-          <button type="submit" style={{ padding: '10px', background: '#2e7d32', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Save</button>
+      <div className="sidebar">
+        <h2 className="sidebar-title">ADD NEW ITEM</h2>
+        <form onSubmit={addFavorite} className="add-item-form">
+          <input placeholder="Item Name" value={formName} onChange={e => setFormName(e.target.value)} />
+          <input placeholder="Item ID" value={formId} onChange={e => setFormId(e.target.value)} />
+          <input placeholder="Icon URL" value={formIcon} onChange={e => setFormIcon(e.target.value)} />
+          <label className="hq-label">
+            <input type="checkbox" checked={formIsHq} onChange={e => setFormIsHq(e.target.checked)} /> 
+            HQ Only
+          </label>
+          <button type="submit" className="save-button">Save</button>
         </form>
 
         <div style={{ flexGrow: 1, overflowY: 'auto' }}>
@@ -108,7 +107,7 @@ export default function App() {
       </div>
 
       {/* Grid Area */}
-      <div style={{ flexGrow: 1, padding: '40px', overflowY: 'auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', alignContent: 'start' }}>
+      <div className="main-grid">
         {activeTrackers.map((item) => (
           <ItemTracker 
             key={`${item.id}-${item.isHq}`}
@@ -120,23 +119,26 @@ export default function App() {
         ))}
       </div>
 
-      {/* Settings Button - Perfect Center */}
-      <button 
-        onClick={() => setShowSettings(!showSettings)} 
-        style={{ 
-          position: 'fixed', bottom: '25px', right: '25px', width: '50px', height: '50px', borderRadius: '50%', 
-          background: '#333', color: '#fff', border: '1px solid #555', cursor: 'pointer', zIndex: 1000,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' 
-        }}
-      >
-        <span style={{ display: 'block', height: '28px', lineHeight: '28px' }}>⚙</span>
+      {/* Settings UI */}
+      <button className="settings-toggle-btn" onClick={() => setShowSettings(!showSettings)}>
+        <span>⚙</span>
       </button>
 
       {showSettings && (
-        <div style={{ position: 'fixed', bottom: '85px', right: '25px', background: '#222', padding: '20px', borderRadius: '12px', border: '1px solid #444', zIndex: 1000, width: '200px' }}>
-          <div style={{ color: '#00d4ff', fontSize: '0.8rem', marginBottom: '10px' }}>REFRESH: {intervals[intervalIndex]}m</div>
-          <input type="range" min="0" max={intervals.length - 1} value={intervalIndex} onChange={e => setIntervalIndex(parseInt(e.target.value))} style={{ width: '100%' }} />
-          <button onClick={() => { localStorage.clear(); window.location.reload(); }} style={{ marginTop: '15px', width: '100%', padding: '8px', background: '#c0392b', border: 'none', color: 'white', borderRadius: '4px', fontSize: '0.7rem' }}>WIPE CACHE</button>
+        <div className="settings-panel">
+          <div style={{ color: '#00d4ff', fontSize: '0.8rem', marginBottom: '10px' }}>
+            REFRESH: {intervals[intervalIndex]}m
+          </div>
+          <input 
+            type="range" 
+            min="0" max={intervals.length - 1} 
+            value={intervalIndex} 
+            onChange={e => setIntervalIndex(parseInt(e.target.value))} 
+            style={{ width: '100%' }} 
+          />
+          <button className="wipe-button" onClick={() => { localStorage.clear(); window.location.reload(); }}>
+            WIPE CACHE
+          </button>
         </div>
       )}
     </div>

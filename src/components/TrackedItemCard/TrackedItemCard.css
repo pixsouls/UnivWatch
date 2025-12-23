@@ -1,0 +1,65 @@
+.favorite-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #252525;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border: 1px solid #333;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+/* Hover state only applies if it's NOT active */
+.favorite-card:not(.active):hover {
+  border-color: #555;
+  background: #2a2a2a;
+}
+
+/* Active/Selected state */
+.favorite-card.active {
+  border-color: #00d4ff;
+  background: #2a2d30;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+.card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+.card-content {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.card-title {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-id {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.delete-fav-btn {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 5px;
+  transition: color 0.2s;
+}
+
+.delete-fav-btn:hover {
+  color: #ff4d4d;
+}
